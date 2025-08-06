@@ -1,0 +1,47 @@
+{% extends 'parent/base.html' %}
+{% block title %}profile{% endblock %}
+{% block content %}
+
+<section>
+	<div>
+		<div>
+			<div>
+				<h1>ایجاد یا ویرایش پست</h1>
+			</div>
+		</div>
+		<div>
+			<div>
+				<div>
+					<div>
+						<!-- Form START -->
+						<form method="post" enctype="multipart/form-data">
+							<div>
+								<div>
+									{% csrf_token %}
+									{{ form.as_p }}
+									{% if post %}
+										{% for img in post.images.all %}
+										<div>
+											<div>
+												<img src="{{ img.image_file.url }}" alt="">
+												<div>
+													<a href="{% url 'blog:delete_image' img.id %}"><i></i></a>
+												</div>
+											</div>
+										</div>
+										{% endfor %}
+									{% endif %}
+								</div>
+							</div>
+							<button type="submit">ذخیره</button>
+						</form>
+						<!-- Form END -->
+					</div>
+				</div>
+				<!-- Chart END -->
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}

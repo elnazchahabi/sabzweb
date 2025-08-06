@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa"> <!-- زبان صفحه را به فارسی تنظیم کنید -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- برای واکنش‌گرا بودن صفحه -->
+    <title>وبلاگ | {% block title %}{% endblock %}</title>
+    
+    <!-- لینک به فایل CSS سفارشی -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    
+    <!-- لینک به Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> 
+    
+    {% block head %} {% endblock %} <!-- بلاک برای استایل‌ها یا اسکریپت‌های اضافه -->
+</head>
+<body dir="ltr"> <!-- جهت متن را به سمت چپ تنظیم کنید -->
+    
+    {% include 'partials/header.html' %} <!-- هدر سایت -->
+    {% include 'partials/navigation.html' %} <!-- ناوبری سایت -->
+    
+    {% block content %} {% endblock %} <!-- محتوای صفحه -->
+    
+    {% include 'partials/footer.html' %} <!-- فوتر سایت -->
+</body>
+</html>

@@ -1,0 +1,37 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% load jformat %}
+{% block title %}ثبت دیدگاه{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+  {% if comment %}
+    <div class="alert alert-success text-center">
+      <p class="mb-2">✅ کامنت شما با موفقیت ثبت شد.</p>
+      <a href="{{ post.get_absolute_url }}" class="btn btn-outline-primary">بازگشت به پست</a>
+    </div>
+  {% else %}
+    <h3 class="mb-4">ثبت دیدگاه</h3>
+    <form method="post" class="border p-4 rounded shadow-sm bg-light">
+      {% csrf_token %}
+      <div class="mb-3">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+      </div>
+      <div class="mb-3">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+      </div>
+      <div class="mb-3">
+        {{ form.body.label_tag }}
+        {{ form.body }}
+      </div>
+      <button type="submit" class="btn btn-primary">افزودن کامنت</button>
+    </form>
+  {% endif %}
+
+</div>
+
+{% endblock %}

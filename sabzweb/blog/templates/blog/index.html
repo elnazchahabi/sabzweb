@@ -1,0 +1,98 @@
+{% extends 'parent/base.html' %}
+{% block title %}post list{% endblock %}
+{% load static %}
+{% load blog_tags %}
+{% load jformat %}
+{% block head %} {% endblock %}
+
+{% block content %}
+
+<!-- Preloader START -->
+<div class="preloader">
+  <div class="loader">
+    <div class="sh1"></div>
+    <div class="sh2"></div>
+  </div>
+</div>
+<!-- Preloader END -->
+
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+
+<!-- =======================
+Main hero START (با پس‌زمینه سورمه‌ای) -->
+<section class="py-5 text-white text-center d-flex align-items-center justify-content-center"
+         style="background-color: #0a1930; height: 350px;">
+  <div>
+    <h1 class="display-4 fw-bold">تکنولوژی و برنامه نویسی</h1>
+    <p class="lead">با ما همراه باشید در دنیای کد و خلاقیت</p>
+  </div>
+</section>
+<!-- Main hero END -->
+
+<!-- آخرین مقالات -->
+<section class="py-5">
+  <div class="container-fluid px-sm-5">
+    <div class="row">
+      <div class="mb-4 text-center">
+        <h2 class="h1 m-0">آخرین مقالات</h2>
+      </div>
+    </div>
+    <div class="row g-3 g-sm-5">
+      {% show_latest_posts 3 %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="{% url 'blog:post_list' %}" class="btn btn-dark">مشاهده همه</a>
+    </div>
+  </div>
+</section>
+
+<!-- محبوب‌ترین مقالات -->
+<section class="py-5 bg-light">
+  <div class="container-fluid px-sm-5">
+    <div class="row">
+      <div class="mb-4 text-center">
+        <h2 class="h1 m-0">محبوب‌ترین مقالات</h2>
+      </div>
+    </div>
+    <div class="row g-4 g-sm-5">
+      {% most_popular_posts 3 as pop_posts %}
+      {% for post in pop_posts %}
+        <div class="col-sm-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <div class="position-relative">
+              {% if post.images.first %}
+                <img class="card-img-top" src="{{ post.images.first.image_file.url }}" alt="{{ post.title }}">
+              {% else %}
+                <div class="bg-secondary text-white text-center p-5">بدون تصویر</div>
+              {% endif %}
+              <div class="card-img-overlay d-flex align-items-start flex-column p-2">
+                <div class="w-100 mt-auto">
+                  <span class="badge bg-dark">{{ post.category }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">
+                <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-dark">{{ post.title }}</a>
+              </h5>
+              <p class="card-text">{{ post.description | markdown | truncatewords:50 }}</p>
+              <p class="text-muted small">{{ post.publish|jformat:"%Y/%m/%d-%H:%M" }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Back to top -->
+<div class="back-top"><i class="bi bi-arrow-up-short"></i></div>
+
+<!-- JS -->
+<script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/functions.js' %}"></script>
+
+{% endblock %}

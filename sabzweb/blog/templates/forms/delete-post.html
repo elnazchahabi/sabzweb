@@ -1,0 +1,14 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}حذف پست{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+  <h3 class="mb-4 text-danger">آیا مطمئنی می‌خواهی پست «{{ post.title }}» را حذف کنی؟</h3>
+  <form method="post">
+    {% csrf_token %}
+    <a href="{{ post.get_absolute_url }}" class="btn btn-secondary me-2">انصراف</a>
+    <button type="submit" class="btn btn-danger">حذف</button>
+  </form>
+</div>
+{% endblock %}

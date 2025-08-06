@@ -1,0 +1,88 @@
+{% load static %}
+{% load markdown_filters %}
+{% load jformat %}
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>وبلاگ | {% block title %}لیست پست‌ها{% endblock %}</title>
+
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  {% block head %}{% endblock %}
+</head>
+<body dir="rtl">
+
+  {% include 'partials/header.html' %}
+  {% include 'partials/navigation.html' %}
+
+  {% block content %}
+  <div class="container py-5">
+    <h2 class="text-center mb-4">لیست مقالات</h2>
+
+    {% if posts %}
+      {% for post in posts %}
+        <div class="row mb-4">
+          <div class="col-md-7 mt-3 mt-md-0">
+            <a href="#" class="badge bg-danger mb-2">
+              <i class="fas fa-circle me-2 small fw-bold"></i>{{ post.category }}
+            </a>
+            <h4>
+              <a href="{{ post.get_absolute_url }}" class="btn-link stretched-link text-reset">
+                {{ post.title }}
+              </a>
+            </h4>
+            <p>{{ post.description|markdownify|truncatewords:40|safe }}</p>
+            <ul class="nav nav-divider align-items-center d-none d-sm-inline-block">
+              <li class="nav-item">
+                <div class="nav-link">
+                  <div class="d-flex align-items-center position-relative">
+                    <div class="avatar avatar-xs">
+                      <img class="avatar-img rounded-circle"
+                           src="{% if post.author.account.photo %}{{ post.author.account.photo.url }}{% else %}{% static 'images/avatar/default.png' %}{% endif %}"
+                           alt="avatar" width="40">
+                    </div>
+                    <span class="ms-3">توسط 
+                      <a href="#" class="stretched-link text-reset btn-link">{{ post.author }}</a>
+                    </span>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item">
+                {{ post.publish|jformat:"%Y/%m/%d-%H:%M" }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr>
+      {% endfor %}
+
+      <!-- Pagination -->
+      <nav class="mt-4 text-center">
+        <ul class="pagination justify-content-center">
+          {% if posts.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">قبلی</a></li>
+          {% endif %}
+          {% for num in posts.paginator.page_range %}
+            <li class="page-item {% if posts.number == num %}active{% endif %}">
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+          {% endfor %}
+          {% if posts.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">بعدی</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% else %}
+      <p class="text-muted text-center">هیچ پستی یافت نشد.</p>
+    {% endif %}
+  </div>
+  {% endblock %}
+
+  {% include 'partials/footer.html' %}
+
+</body>
+</html>
